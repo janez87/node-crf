@@ -2,6 +2,7 @@
 *.slo
 *.lo
 *.o
+build/
 
 # Compiled Dynamic libraries
 *.so
@@ -11,3 +12,12 @@
 *.lai
 *.la
 *.a
+
+#test
+test.js
+
+#model
+aimodel
+
+#example
+example.cpp
