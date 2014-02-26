@@ -6,19 +6,8 @@
       "include_dirs":[
         "include"
       ],
-      "link_settings":{
-        "libraries":[
-          "libcrfpp.dylib"
-        ]
-      },
-      "conditions":[
-        ['OS=="win"',{
-          "link_settings":{
-            "libraries":{
-              "libcrfpp.dll"
-            }
-          }
-        }]
+      "libraries":[
+        "-lcrfpp"
       ]
     }
   ]
