@@ -2,7 +2,7 @@
 #define NODECRF_HPP
 
 #include <node.h>
-#include "include/crfpp.h"
+#include "../include/crfpp.h"
 
 // Do not include this line. It's generally frowned upon to use namespaces
 // in header files as it may cause issues with other code that includes your
@@ -21,9 +21,6 @@ protected:
     CRF();
 
     static v8::Handle<v8::Value> New(const v8::Arguments& args);
-    static v8::Handle<v8::Value> getModel(const v8::Arguments& args);
-
-    v8::Persistent<v8::String> model_;
 
     //Actual tagger
     v8::Persistent<CRFPP::Tagger> tagger;

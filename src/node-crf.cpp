@@ -21,7 +21,6 @@ void CRF::Init(Handle<Object> target) {
     constructor->SetClassName(name);
 
     // Add all prototype methods, getters and setters here.
-    NODE_SET_PROTOTYPE_METHOD(constructor, "model", getModel);
     NODE_SET_PROTOTYPE_METHOD(constructor, "classify", classify);
 
     // This has to be last, otherwise the properties won't show up on the
@@ -62,10 +61,6 @@ Handle<Value> CRF::New(const Arguments& args) {
     // Creates a new instance object of this type and wraps it.
     CRF* obj = new CRF();
 
-    //Path to the model file
-    obj -> model_ = Persistent<String>::New(args[0]-> ToString());
-
-
     CRFPP::Tagger* tag = CRFPP::createTagger(get(args[0]));
     if(!tag){
        return ThrowException(Exception::TypeError(
@@ -77,16 +72,6 @@ Handle<Value> CRF::New(const Arguments& args) {
     obj->Wrap(args.This());
 
     return args.This();
-}
-
-
-Handle<Value> CRF::getModel(const Arguments& args) {
-    HandleScope scope;
-
-    // Retrieves the pointer to the wrapped object instance.
-    CRF* obj = ObjectWrap::Unwrap<CRF>(args.This());
-
-    return scope.Close(obj->model_);
 }
 
 Handle<Value> CRF::classify(const Arguments& args){
@@ -102,7 +87,6 @@ Handle<Value> CRF::classify(const Arguments& args){
     for(int i=0;i<size;i++){
         Local<Value> element = arr->Get(i);
 
-        printf("%s \n",get(element));
         a->add(get(element));
     }
 
