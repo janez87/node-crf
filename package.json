@@ -1,6 +1,5 @@
 {
   "name": "node-crf",
   "version": "0.1.0",
-  "aaaamain": "./build/Release/node-crf",
   "main": "node-crf.js"
 }

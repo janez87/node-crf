@@ -2,21 +2,28 @@ var _nodecrf = require('./build/Release/nodecrf');
 
 var _crf;
 
+//Constructor
+//All the properties besides the model are currently useless (I don't retrieve the advanced statistics)
 var CRF = function(model, nbest, deepinfo) {
 
 	if (model === undefined) {
 		throw new Error('A path to the model must be specified');
 	}
+
 	this.model = model;
 	this.nbest = nbest || 2;
 	this.deepInfo = deepinfo || true;
 
 	this.isInitialized = false;
 
-	this.separator = '';
+	//Separator used to separate the actual word from the POS tag
+	this.separator = '_';
 };
 
 
+//Initialize the classficator
+//It creates the actual C++ object
+//Any changes performed after the invokation of this event are useless
 CRF.prototype.init = function() {
 
 	var command = '-m ' + this.model;
@@ -34,11 +41,16 @@ CRF.prototype.init = function() {
 	this.isInitialized = true;
 };
 
+//It peform the classification of the text
+//The text must be previously POS tagged and in the form "WordSEPARATORTag WordSEPARATORTag"
+//It return the category according to the trained model
 CRF.prototype.classify = function(text) {
 
 	if (!this.isInitialized) {
 		throw new Error('Call the init() methods before classfying');
 	}
+
+	//TODO: regexp matching to verify the format of the text?
 
 	var array = text.split(' ');
 
