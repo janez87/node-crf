@@ -98,8 +98,8 @@ Handle<Value> CRF::classify(const Arguments& args){
 
     a->clear();
 
-    uint size = arr->Length();
-    for(uint i=0;i<size;i++){
+    int size = arr->Length();
+    for(int i=0;i<size;i++){
         Local<Value> element = arr->Get(i);
 
         printf("%s \n",get(element));
