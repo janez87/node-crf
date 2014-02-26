@@ -10,7 +10,16 @@
         "libraries":[
           "libcrfpp.dylib"
         ]
-      }
+      },
+      "conditions":[
+        ['OS=="win"',{
+          "link_settings":{
+            "libraries":{
+              "libcrfpp.dll"
+            }
+          }
+        }]
+      ]
     }
   ]
 }
