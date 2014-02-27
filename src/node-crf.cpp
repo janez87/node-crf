@@ -91,8 +91,14 @@ Handle<Value> CRF::classify(const Arguments& args){
     }
 
     a->parse();
-    const char* solution = a->y2(0);
-    return scope.Close(String::New(solution));
+    Local<Array> solutions = Array::New(a->ysize());
+
+    for (size_t i = 0; i < a->size(); ++i)
+    {
+        solutions -> Set(i,Local<Value>(String::New(a->y2(i))));
+    }
+
+    return scope.Close(solutions);
 };
 
 

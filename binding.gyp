@@ -6,8 +6,11 @@
       "include_dirs":[
         "include"
       ],
+      "variables":{
+        "LIB_PATH%":""
+      },
       "libraries":[
-        "-lcrfpp"
+        "-l<(LIB_PATH)crfpp"
       ]
     }
   ]

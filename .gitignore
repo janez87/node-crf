@@ -21,3 +21,9 @@ aimodel
 
 #example
 example.cpp
+
+#mac stuff
+.DS_Store
+
+#other stuff
+*.bak
