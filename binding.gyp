@@ -9,8 +9,17 @@
       "variables":{
         "LIB_PATH%":""
       },
-      "libraries":[
-        "-l<(LIB_PATH)crfpp"
+      "conditions":[
+        ['LIB_PATH==""',{
+          "libraries":[
+            "-lcrfpp"
+          ]
+        },{
+          "libraries":[
+            "-L<(LIB_PATH)crfpp"
+          ]
+        }
+        ]
       ]
     }
   ]
