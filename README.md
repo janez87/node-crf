@@ -16,7 +16,11 @@ Probably it won't work
 In the folder run
     
       npm build .
-    
+
+You can specify the localtion of the CRF++ library using the argument --LIB_PATH
+
+      node-gyp build --LIB_PATH=absolute-path-to-the-library
+      
 ## Usage
 
 TODO
