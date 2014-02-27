@@ -11,6 +11,6 @@
     "url": "https://github.com/janez87/node-crf.git"
   },
   "dependencies": {
-    "node-gyp:": "*"
+    "node-gyp": "*"
   }
 }
