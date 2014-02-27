@@ -27,3 +27,6 @@ example.cpp
 
 #other stuff
 *.bak
+
+#npm
+.npmignore

@@ -4,11 +4,6 @@
 #include <node.h>
 #include "../include/crfpp.h"
 
-// Do not include this line. It's generally frowned upon to use namespaces
-// in header files as it may cause issues with other code that includes your
-// header file.
-// using namespace v8;
-
 class CRF : public node::ObjectWrap {
 public:
     static v8::Persistent<v8::FunctionTemplate> constructor;
