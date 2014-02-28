@@ -5,7 +5,7 @@ A node wrapper for the CRFPP toolkit
 
 ## Attention
 
-A part from that, this module assume you to have a basic knowledge about CRF, so I suggest you to look at the official site of the original tool ( [CRF++](http://crfpp.googlecode.com/svn/trunk/doc/index.html))
+This module assume you to have a basic knowledge about CRF, so I suggest you to look at the official site of the original tool ( [CRF++](http://crfpp.googlecode.com/svn/trunk/doc/index.html))
 
 ## Requirement
 
