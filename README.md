@@ -1,13 +1,13 @@
 node-crf
 ========
 
-A node wrapper for the CRFPP toolkit
+A node wrapper for the CRF++ toolkit
 
 ## Attention
 
-A part from that, this module assume you to have a basic knowledge about CRF, so I suggest you to look at the official site of the original tool ( [CRF++](http://crfpp.googlecode.com/svn/trunk/doc/index.html))
+This module assume you to have a basic knowledge about CRF, so I suggest you to look at the official site of the original tool ( [CRF++](http://crfpp.googlecode.com/svn/trunk/doc/index.html))
 
-## Requirement
+## Requirements
 
 - node-gyp
 - CRF++ installed on your system (look [here](http://crfpp.googlecode.com/svn/trunk/doc/index.html))
@@ -58,8 +58,8 @@ You can specify the localtion of the CRF++ library using the argument --LIB_PATH
     
     console.log(solution);
     
-## Known Issue
+## Known Issues
 
 - Possible compilation problem caused by the location of the `crfpp` library
-- Unresolved compilation issue on windows (sorry guys, I'm working on that :( )
+- Unresolved compilation issue on Windows (sorry guys, I'm working on that :( )
 
