@@ -36,11 +36,11 @@ CRF::CRF(){};
 char *CRF::get(Local<Value> value, const char *fallback = "") {
     if (value->IsString()) {
         v8::String::AsciiValue string(value);
-        char *str = (char *) std::malloc(string.length() + 1);
+        char *str = (char *) malloc(string.length() + 1);
         std::strcpy(str, *string);
         return str;
     }
-    char *str = (char *) std::malloc(std::strlen(fallback) + 1);
+    char *str = (char *) malloc(std::strlen(fallback) + 1);
     std::strcpy(str, fallback);
     return str;
 }
