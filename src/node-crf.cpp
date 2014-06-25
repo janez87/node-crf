@@ -3,6 +3,7 @@
 #include "node-crf.hpp"
 
 #include <string>
+#include <cstring>
 
 using namespace v8;
 //using namespace std;
