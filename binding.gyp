@@ -7,7 +7,7 @@
         "include"
       ],
       "variables":{
-        "LIB_PATH%":""
+        "LIB_PATH":""
       },
       "conditions":[
         ['LIB_PATH==""',{
@@ -19,7 +19,14 @@
             "-L<(LIB_PATH)crfpp"
           ]
         }
-        ]
+        ],['OS=="win"', {
+            'cflags': [
+              '/WX',
+            ],
+          }, { # OS != "win"
+            "cflags": [
+              "-fpermissive",
+            ]}]
       ]
     }
   ]

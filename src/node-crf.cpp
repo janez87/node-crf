@@ -5,7 +5,7 @@
 #include <string>
 
 using namespace v8;
-using namespace std;
+//using namespace std;
 
 Persistent<FunctionTemplate> CRF::constructor;
 
@@ -34,12 +34,12 @@ CRF::CRF(){};
 char *CRF::get(Local<Value> value, const char *fallback = "") {
     if (value->IsString()) {
         v8::String::AsciiValue string(value);
-        char *str = (char *) malloc(string.length() + 1);
-        strcpy(str, *string);
+        char *str = (char *) std::malloc(string.length() + 1);
+        std::strcpy(str, *string);
         return str;
     }
-    char *str = (char *) malloc(strlen(fallback) + 1);
-    strcpy(str, fallback);
+    char *str = (char *) std::malloc(std::strlen(fallback) + 1);
+    std::strcpy(str, fallback);
     return str;
 }
 //###################################################################
