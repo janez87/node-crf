@@ -1,7 +1,7 @@
-{
+i{
   "name": "node-crf",
   "description": "A node wrapper for the CRFPP toolkit",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "node-crf.js",
   "engines": {
     "node": ">=0.10.26"
