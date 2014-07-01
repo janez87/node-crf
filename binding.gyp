@@ -12,7 +12,8 @@
       "conditions":[
         ['LIB_PATH==""',{
           "libraries":[
-            "-lcrfpp"
+            "-lcrfpp",
+            "-L/usr/local/lib/"
           ]
         },{
           "libraries":[
@@ -21,7 +22,7 @@
         }
         ],['OS=="win"', {
             'cflags': [
-              '/WX',
+              ' ',
             ],
           }, { # OS != "win"
             "cflags": [
