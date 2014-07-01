@@ -1,4 +1,4 @@
-i{
+{
   "name": "node-crf",
   "description": "A node wrapper for the CRFPP toolkit",
   "version": "0.1.10",
