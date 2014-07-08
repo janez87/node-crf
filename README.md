@@ -23,7 +23,7 @@ In the folder run
 
 You can specify the localtion of the CRF++ library using the argument --LIB_PATH
 
-      node-gyp build --LIB_PATH=absolute-path-to-the-library
+      npm build . --LIB_PATH=absolute-path-to-the-folder
 
 ### From npm
 

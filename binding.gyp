@@ -7,7 +7,7 @@
         "include"
       ],
       "variables":{
-        "LIB_PATH":""
+        "LIB_PATH%":""
       },
       "conditions":[
         ['LIB_PATH==""',{
@@ -17,7 +17,7 @@
           ]
         },{
           "libraries":[
-            "-L<(LIB_PATH)crfpp"
+            "-L<(LIB_PATH)"
           ]
         }
         ],['OS=="win"', {
