@@ -2,7 +2,7 @@
 #define NODECRF_HPP
 
 #include <node.h>
-#include "../include/crfpp.h"
+#include "crfpp.h"
 
 class CRF : public node::ObjectWrap {
 public:

@@ -69,7 +69,7 @@ Handle<Value> CRF::New(const Arguments& args) {
             String::New(CRFPP::getTaggerError())));
     }
 
-    obj -> tagger = Persistent<CRFPP::Tagger>::Persistent(tag);
+    obj -> tagger = Persistent<CRFPP::Tagger>(tag);
 
     obj->Wrap(args.This());
 
