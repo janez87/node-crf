@@ -94,7 +94,7 @@ Handle<Value> CRF::classify(const Arguments& args){
     a->parse();
 
     Local<Array> solutions = Array::New(a->nbest());
-    int count = 0;
+    unsigned int count = 0;
     while (count < a->nbest())
     {
         Local<Array> s = Array::New(a->ysize());
