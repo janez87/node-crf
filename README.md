@@ -10,7 +10,6 @@ This module assume you to have a basic knowledge about CRF, so I suggest you to 
 ## Requirements
 
 - node-gyp
-- CRF++ installed on your system (look [here](http://crfpp.googlecode.com/svn/trunk/doc/index.html))
 - A trained CRF++ model
  
 ## Installation
@@ -21,14 +20,9 @@ In the folder run
     
       npm build .
 
-You can specify the localtion of the CRF++ library using the argument --LIB_PATH
-
-      npm build . --LIB_PATH=absolute-path-to-the-folder
-
 ### From npm
 
      npm install node-crf
-     
 
 ## Usage
 
@@ -51,15 +45,13 @@ You can specify the localtion of the CRF++ library using the argument --LIB_PATH
     
     var text = '2_CD nd_CC part_NN of_IN Web_NNP User_NN Engagement_NN tutorial:_NN Web_NNP Analytics_NNS is_VBZ about_IN to_TO start_VB by_IN @mounialalmas_NNS #www_NN 2013_CD';
     
-    
     // Classify the piece of text
-    // It will return an array with the selected category for each word
-    var solution = classifier.classify(text);
-    
-    console.log(solution);
+    // It will return an array of nbest solutions,
+    // each solution is an array with the selected category for each word
+    var solutions = classifier.classify(text);
+    console.log(solutions);
     
 ## Known Issues
-
-- Possible compilation problem caused by the location of the `crfpp` library
+- You may need to add config.h to deps/crfpp/config directory according to your platform and arch,
+    now we support linux/ia32, linux/x64, mac/x64
 - Unresolved compilation issue on Windows (sorry guys, I'm working on that :( )
-
