@@ -34,7 +34,6 @@
         'HAVE_CONFIG_H'
     ],
   },
-
   'targets': [
     # crfpp
     {
@@ -53,6 +52,19 @@
         'path.cpp',
         'tagger.cpp',
       ],
+
+      'conditions':[
+        ['OS=="mac"',{
+          'xcode_settings':{
+           'MACOSX_DEPLOYMENT_TARGET': '10.7',
+           'OTHER_CFLAGS':[
+             '-pthread',
+            '-stdlib=libc++',
+          ],
+        }
+      }]
+      ]
     },
+
   ]
 }
