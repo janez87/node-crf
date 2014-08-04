@@ -2,32 +2,20 @@
   "targets": [
     {
       "target_name": "nodecrf",
-      "sources": [ "src/node-crf.cpp" ],
+      "sources": ["src/node-crf.cpp"],
       "include_dirs":[
-        "include"
+        "deps/crfpp"
       ],
-      "variables":{
-        "LIB_PATH%":""
-      },
-      "conditions":[
-        ['LIB_PATH==""',{
-          "libraries":[
-            "-lcrfpp",
-            "-L/usr/local/lib/"
-          ]
-        },{
-          "libraries":[
-            "-L<(LIB_PATH)"
-          ]
+      'dependencies': [
+        'deps/crfpp/libcrfpp.gyp:crfpp',
+      ],
+
+      'conditions':[
+        ['OS=="mac"',{
+          'xcode_settings':{
+           'MACOSX_DEPLOYMENT_TARGET': '10.7',
         }
-        ],['OS=="win"', {
-            'cflags': [
-              ' ',
-            ],
-          }, { # OS != "win"
-            "cflags": [
-              "-fpermissive",
-            ]}]
+        }]
       ]
     }
   ]

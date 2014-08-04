@@ -69,7 +69,7 @@ Handle<Value> CRF::New(const Arguments& args) {
             String::New(CRFPP::getTaggerError())));
     }
 
-    obj -> tagger = Persistent<CRFPP::Tagger>::Persistent(tag);
+    obj -> tagger = Persistent<CRFPP::Tagger>(tag);
 
     obj->Wrap(args.This());
 
@@ -88,16 +88,23 @@ Handle<Value> CRF::classify(const Arguments& args){
     int size = arr->Length();
     for(int i=0;i<size;i++){
         Local<Value> element = arr->Get(i);
-
         a->add(get(element));
     }
 
     a->parse();
-    Local<Array> solutions = Array::New(a->ysize());
 
-    for (size_t i = 0; i < a->size(); ++i)
+    Local<Array> solutions = Array::New(a->nbest());
+    unsigned int count = 0;
+    while (count < a->nbest())
     {
-        solutions -> Set(i,Local<Value>(String::New(a->y2(i))));
+        Local<Array> s = Array::New(a->ysize());
+        for (size_t i = 0; i < a->size(); ++i)
+        {
+            s -> Set(i,Local<Value>(String::New(a->y2(i))));
+        }
+        solutions -> Set(count, s);
+        a->next();
+        count++;
     }
 
     return scope.Close(solutions);
