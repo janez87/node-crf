@@ -12,7 +12,7 @@ var CRF = function(model, nbest, deepinfo) {
 
 	this.model = model;
 	this.nbest = nbest || 2;
-	this.deepInfo = deepinfo || true;
+	this.deepinfo = deepinfo || true;
 
 	this.isInitialized = false;
 
