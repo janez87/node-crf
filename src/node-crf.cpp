@@ -35,7 +35,7 @@ CRF::CRF(){};
 //Utility
 char *CRF::get(Local<Value> value, const char *fallback = "") {
     if (value->IsString()) {
-        v8::String::AsciiValue string(value);
+        v8::String::Utf8Value string(value->ToString());
         char *str = (char *) malloc(string.length() + 1);
         std::strcpy(str, *string);
         return str;
