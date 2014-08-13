@@ -88,7 +88,11 @@ Handle<Value> CRF::classify(const Arguments& args){
     int size = arr->Length();
     for(int i=0;i<size;i++){
         Local<Value> element = arr->Get(i);
-        a->add(get(element));
+        char* c = get(element);
+        a->add(c);
+        // each iteration, free memory
+        free(c);
+        c = NULL;
     }
 
     a->parse();
