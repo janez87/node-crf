@@ -6,28 +6,39 @@
 #include <cstring>
 #include <stdlib.h>
 
-using namespace v8;
+using v8::Array;
+using v8::Context;
+using v8::Function;
+using v8::FunctionCallbackInfo;
+using v8::FunctionTemplate;
+using v8::Isolate;
+using v8::Local;
+using v8::Number;
+using v8::Object;
+using v8::Persistent;
+using v8::String;
+using v8::Value;
+using v8::Exception;
+using v8::Handle;
+
 //using namespace std;
 
-Persistent<FunctionTemplate> CRF::constructor;
+Persistent<Function> CRF::constructor;
 
-void CRF::Init(Handle<Object> target) {
-    HandleScope scope;
-
-    Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
-    Local<String> name = String::NewSymbol("CRF");
-
-    constructor = Persistent<FunctionTemplate>::New(tpl);
-    // ObjectWrap uses the first internal field to store the wrapped pointer.
-    constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(name);
-
-    // Add all prototype methods, getters and setters here.
-    NODE_SET_PROTOTYPE_METHOD(constructor, "classify", classify);
-
-    // This has to be last, otherwise the properties won't show up on the
-    // object in JavaScript.
-    target->Set(name, constructor->GetFunction());
+void CRF::Init(Local<Object> exports) {
+    Isolate* isolate = Isolate::GetCurrent();
+    
+    // Prepare constructor template
+    Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, New);
+    tpl->SetClassName(String::NewFromUtf8(isolate, "CRF"));
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+    
+    // Prototype
+    NODE_SET_PROTOTYPE_METHOD(tpl, "classify", classify);
+    
+    constructor.Reset(isolate, tpl->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "CRF"),
+                 tpl->GetFunction());
 }
 
 CRF::CRF(){};
@@ -46,45 +57,57 @@ char *CRF::get(Local<Value> value, const char *fallback = "") {
 }
 //###################################################################
 
-Handle<Value> CRF::New(const Arguments& args) {
-    HandleScope scope;
-
-    if (!args.IsConstructCall()) {
-        return ThrowException(Exception::TypeError(
-            String::New("Use the new operator to create instances of this object."))
-        );
+void CRF::New(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
+    
+    if (args.IsConstructCall()) {
+        // Invoked as constructor: `new CRF(...)`
+        
+        CRF* obj = new CRF();
+        
+        CRFPP::Tagger* tag = CRFPP::createTagger(get(args[0]));
+        if(!tag){
+            
+            isolate->ThrowException(Exception::TypeError(
+                                                       String::NewFromUtf8(isolate, (const char *) CRFPP::getTaggerError())));
+            return;
+            
+        }
+        
+        v8::Local<v8::External> handle = v8::External::New(isolate, tag);
+        v8::Persistent<v8::External, v8::CopyablePersistentTraits<v8::External> > tagger(isolate, handle);
+        
+        obj -> tagger = tagger;
+        
+        obj->Wrap(args.This());
+        args.GetReturnValue().Set(args.This());
+    } else {
+        const int argc = 1;
+        Local<Value> argv[argc] = { args[0] };
+        Local<Function> cons = Local<Function>::New(isolate, constructor);
+        args.GetReturnValue().Set(cons->NewInstance(argc, argv));
     }
-
-    if (args.Length() < 1) {
-        return ThrowException(Exception::TypeError(
-            String::New("First argument must be the path to the model")));
-    }
-
-    // Creates a new instance object of this type and wraps it.
-    CRF* obj = new CRF();
-
-    CRFPP::Tagger* tag = CRFPP::createTagger(get(args[0]));
-    if(!tag){
-       return ThrowException(Exception::TypeError(
-            String::New(CRFPP::getTaggerError())));
-    }
-
-    obj -> tagger = Persistent<CRFPP::Tagger>(tag);
-
-    obj->Wrap(args.This());
-
-    return args.This();
 }
 
-Handle<Value> CRF::classify(const Arguments& args){
-    HandleScope scope;
-    Local<Array> arr = Local<Array>::Cast(args[0]);
-    CRF* obj = ObjectWrap::Unwrap<CRF>(args.This());
 
-    CRFPP::Tagger *a = *(obj->tagger);
+void CRF::classify(const FunctionCallbackInfo<Value>& args){
+    Isolate* isolate = args.GetIsolate();
+    
+    CRF* obj = (CRF *) ObjectWrap::Unwrap<CRF>(args.Holder());
 
+    v8::Persistent<v8::External, v8::CopyablePersistentTraits<v8::External> > tagger = obj->tagger;
+    v8::Local<v8::External> handle = v8::Local<v8::External>::New(isolate, tagger);
+    CRFPP::Tagger *a = (CRFPP::Tagger *) handle->Value();
+    
+    if (a==NULL) {
+        fprintf(stderr,"No tagger. Exiting...\n");
+        return;
+    }
+    
     a->clear();
-
+    
+    Local<Array> arr = Local<Array>::Cast(args[0]);
+    
     int size = arr->Length();
     for(int i=0;i<size;i++){
         Local<Value> element = arr->Get(i);
@@ -94,27 +117,29 @@ Handle<Value> CRF::classify(const Arguments& args){
         free(c);
         c = NULL;
     }
-
-    a->parse();
-
-    Local<Array> solutions = Array::New(a->nbest());
+    
+    bool isParsed = a->parse();
+    if ( isParsed == false) {
+        fprintf(stderr,"Failed to parse.\n");
+    }
+    
+    Local<Array> solutions = Array::New(isolate, a->nbest());
+    
     unsigned int count = 0;
     while (count < a->nbest())
     {
-        Local<Array> s = Array::New(a->ysize());
+        Local<Array> s = Array::New(isolate, a->ysize());
         for (size_t i = 0; i < a->size(); ++i)
         {
-            s -> Set(i,Local<Value>(String::New(a->y2(i))));
+            s -> Set(i,Local<Value>(String::NewFromUtf8(isolate, a->y2(i))));
         }
         solutions -> Set(count, s);
         a->next();
         count++;
     }
-
-    return scope.Close(solutions);
+    
+    args.GetReturnValue().Set(solutions);
 };
-
-
 
 void RegisterModule(Handle<Object> target) {
     CRF::Init(target);
