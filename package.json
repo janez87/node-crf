@@ -1,10 +1,10 @@
 {
   "name": "node-crf",
   "description": "A node wrapper for the CRFPP toolkit",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "node-crf.js",
   "engines": {
-    "node": ">=0.10.26"
+    "node": ">=0.12"
   },
   "repository": {
     "type": "git",
