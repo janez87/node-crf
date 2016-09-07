@@ -1,10 +1,10 @@
 var _nodecrf = require('./build/Release/nodecrf');
 
-var _crf;
-
 //Constructor
 //All the properties besides the model are currently useless (I don't retrieve the advanced statistics)
 var CRF = function(model, nbest, deepinfo) {
+
+	this._crf = null;
 
 	if (model === undefined) {
 		throw new Error('A path to the model must be specified');
@@ -19,7 +19,6 @@ var CRF = function(model, nbest, deepinfo) {
 	//Separator used to separate the actual word from the POS tag
 	this.separator = '_';
 };
-
 
 //Initialize the classficator
 //It creates the actual C++ object
@@ -36,7 +35,7 @@ CRF.prototype.init = function() {
 		command += ' -v 2';
 	}
 
-	_crf = new _nodecrf.CRF(command);
+	this._crf = new _nodecrf.CRF(command);
 
 	this.isInitialized = true;
 };
@@ -58,7 +57,7 @@ CRF.prototype.classify = function(text) {
 		array[i] = array[i].replace(this.separator, ' ');
 	}
 
-	var classification = _crf.classify(array);
+	var classification = this._crf.classify(array);
 
 	return classification;
 
